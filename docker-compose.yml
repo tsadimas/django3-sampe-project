@@ -14,7 +14,7 @@ services:
   django:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: nonroot.Dockerfile
     env_file:
      - ./myproject/myproject/.env
     ports:

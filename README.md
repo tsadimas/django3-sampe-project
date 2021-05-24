@@ -18,9 +18,9 @@ python manage.py runserver
 ```
 # K8S
 
-## microk8s enable storage
+## microk8s enable storage and dns ingress
 ```bash
-microk8s enable storage
+microk8s enable storage dns
 ```
 
 ## Persistense Volume
@@ -36,10 +36,18 @@ kubectl create secret generic pg-user \
 --from-literal=PGPASSWORD=<put password here>
 ```
 
+## configmaps
+```bash
+kubectl create configmap django-config --from-env-file=myproject/myproject/.env
+```
 ## Deployments
 * Postgres
 ```bash
 kubectl apply -f k8s/db/postgres-deployment.yaml
+```
+* django
+```bash
+kubectl apply -f k8s/django/django-deployment.yaml
 ```
 
 ## Services
@@ -47,3 +55,10 @@ kubectl apply -f k8s/db/postgres-deployment.yaml
 ```bash
 kubectl apply -f k8s/db/postgres-clip.yaml
 ```
+
+* django
+```bash
+kubectl apply -f k8s/django/django-clip.yaml
+```
+
+### Migrations?

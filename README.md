@@ -61,4 +61,9 @@ kubectl apply -f k8s/db/postgres-clip.yaml
 kubectl apply -f k8s/django/django-clip.yaml
 ```
 
+## Ingress
+
+```bash
+kubectl apply -f k8s/django-ingress.yaml
+```
 ### Migrations?

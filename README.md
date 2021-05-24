@@ -67,3 +67,4 @@ kubectl apply -f k8s/django/django-clip.yaml
 kubectl apply -f k8s/django-ingress.yaml
 ```
 ### Migrations?
+### Static files? [whitenoise](http://whitenoise.evans.io/en/stable/)

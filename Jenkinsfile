@@ -49,7 +49,7 @@ pipeline {
                 TAG=$COMMIT_ID-$BUILD_ID
                 docker build -t $IMAGE -t $IMAGE:$TAG .
                 docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-                dokcer push $IMAGE --all-tags
+                docker push $IMAGE --all-tags
                 '''
             }
         }

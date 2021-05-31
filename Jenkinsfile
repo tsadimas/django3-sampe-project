@@ -35,5 +35,12 @@ pipeline {
             }
             }
         }
+        stage('Deploy to k8s') {
+            steps {
+                sh '''
+                kubectl get pods
+                '''
+            }
+        }
     }
 }

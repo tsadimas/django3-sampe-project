@@ -36,9 +36,16 @@ pipeline {
         //     }
         // }
          stage('Docker create and push image') {
+            environment {
+                IMAGE='tsadimas/django'
+            }
             steps {
                 sh '''
-                docker build -t tsadimas/django .
+                echo $BUILD_ID
+                COMMIT_ID=$(git rev-parse --short HEAD)
+                echo $COMMIT_ID
+                TAG=$COMMIT_ID-$BUILD_ID
+                docker build -t $IMAGE -t $IMAGE:$TAG .
                 '''
             }
         }

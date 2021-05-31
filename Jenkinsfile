@@ -35,6 +35,13 @@ pipeline {
         //     }
         //     }
         // }
+         stage('Docker create and push image') {
+            steps {
+                sh '''
+                docker build -t tsadimas/django .
+                '''
+            }
+        }
         stage('Deploy to k8s') {
             steps {
                 sh '''

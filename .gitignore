@@ -108,3 +108,5 @@ GitHub.sublime-settings
 
 # static directory
 myproject/static
+
+assets/nginx/certs

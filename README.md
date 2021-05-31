@@ -63,6 +63,17 @@ kubectl apply -f k8s/django/django-clip.yaml
 
 ## Ingress
 
+
+### secret
+
+```bash
+cd assets/nginx/certs
+kubectl create secret generic tls-secret \
+--from-file=tls.crt=certificate.crt \
+--from-file=tls.key=private.key \
+--from-file=ca.crt=ca_bundle.crt
+```
+
 ```bash
 kubectl apply -f k8s/django-ingress.yaml
 ```

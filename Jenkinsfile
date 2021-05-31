@@ -23,18 +23,18 @@ pipeline {
                     ./manage.py test'''
             }
         }
-        stage('Deploy') {
-            steps {
-                sshagent (credentials: ['ssh-deployment-1']) {
+        // stage('Deploy') {
+        //     steps {
+        //         sshagent (credentials: ['ssh-deployment-1']) {
 
-                sh '''
-                    pwd
-                    echo $WORKSPACE
-                    ansible-playbook -i ~/workspace/ansible-project/hosts.yml -l deploymentservers ~/workspace/ansible-project/playbooks/check.yml
-                    '''
-            }
-            }
-        }
+        //         sh '''
+        //             pwd
+        //             echo $WORKSPACE
+        //             ansible-playbook -i ~/workspace/ansible-project/hosts.yml -l deploymentservers ~/workspace/ansible-project/playbooks/check.yml
+        //             '''
+        //     }
+        //     }
+        // }
         stage('Deploy to k8s') {
             steps {
                 sh '''

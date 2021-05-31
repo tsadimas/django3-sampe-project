@@ -38,6 +38,8 @@ pipeline {
          stage('Docker create and push image') {
             environment {
                 IMAGE='tsadimas/django'
+                DOCKER_USERNAME='tsadimas'
+                DOCKER_PASSWORD=credentials('docker-passwd')
             }
             steps {
                 sh '''
@@ -46,6 +48,8 @@ pipeline {
                 echo $COMMIT_ID
                 TAG=$COMMIT_ID-$BUILD_ID
                 docker build -t $IMAGE -t $IMAGE:$TAG .
+                docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+                dokcer push $IMAGE --all-tags
                 '''
             }
         }

@@ -56,7 +56,9 @@ pipeline {
         stage('Deploy to k8s') {
             steps {
                 sh '''
-                kubectl get pods
+                kubectl config use-context microk8s
+                cd k8s/db
+                kubectl apply -f *.yaml
                 '''
             }
         }

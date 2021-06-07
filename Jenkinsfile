@@ -6,7 +6,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Get some code from a GitHub repository
-                git branch: 'main', url: 'https://github.com/tsadimas/django3-sampe-project.git'
+                git branch: 'k8s', url: 'https://github.com/tsadimas/django3-sampe-project.git'
 
                 
             }
@@ -58,7 +58,7 @@ pipeline {
                 sh '''
                 kubectl config use-context microk8s
                 cd k8s/db
-                kubectl apply -f *.yaml
+                ls *.yaml | while read x; do kubectl apply -f $x; done
                 '''
             }
         }

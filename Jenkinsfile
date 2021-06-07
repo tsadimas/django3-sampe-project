@@ -20,6 +20,7 @@ pipeline {
                     pip install -r requirements.txt
                     cd myproject
                     cp myproject/.env.example myproject/.env
+                    sed 's#^DATABASE_URL.*#DATABASE_URL=sqlite:///.test.db#g' myproject/.env
                     ./manage.py test'''
             }
         }

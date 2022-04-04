@@ -1,0 +1,81 @@
+## Bitnami PostgreSQL image version
+## ref: https://hub.docker.com/r/bitnami/postgresql/tags/
+##
+
+image:
+  tag: 12.7.0-debian-10-r6
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ##
+  # pullSecrets:
+  #   - myRegistryKeySecretName
+
+  ## Set to true if you would like to see extra information on logs
+  ## It turns BASH and NAMI debugging in minideb
+  ## ref:  https://github.com/bitnami/minideb-extras/#turn-on-bash-debugging
+  ##
+  debug: false
+
+## String to partially override postgresql.fullname template (will maintain the release name)
+##
+nameOverride: postgres
+
+## String to fully override postgresql.fullname template
+##
+fullnameOverride: postgres
+
+## PostgreSQL password using existing secret
+# existingSecret: pg-user
+##
+
+postgresqlUsername: postgres
+postgresqlPassword: pass123
+
+## PostgreSQL client authentication configuration
+## Specify content for pg_hba.conf
+## Default: do not create pg_hba.conf
+## Alternatively, you can put your pg_hba.conf under the files/ directory
+# pgHbaConfiguration: |-
+#   local all all trust
+#   host all all localhost trust
+#   host mydatabase mysuser 192.168.0.0/24 md5
+
+## ConfigMap with PostgreSQL configuration
+## NOTE: This will override postgresqlConfiguration and pgHbaConfiguration
+# configurationConfigMap:
+
+## PostgreSQL service configuration
+##
+service:
+  port: 5432
+
+## PostgreSQL data Persistent Volume Storage Class
+## If defined, storageClassName: <storageClass>
+## If set to "-", storageClassName: "", which disables dynamic provisioning
+## If undefined (the default) or set to null, no storageClassName spec is
+##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+##   GKE, AWS & OpenStack)
+##
+persistence:
+  enabled: true
+  ## The path the volume will be mounted at, useful when using different
+  ## PostgreSQL images.
+  ##
+  mountPath: /bitnami/postgresql
+  storageClass: microk8s-hostpath
+  accessModes:
+    - ReadWriteOnce
+  size: 2Gi
+  annotations: {}
+
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m

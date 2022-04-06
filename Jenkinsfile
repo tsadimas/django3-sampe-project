@@ -30,7 +30,7 @@ pipeline {
                 sh '''
                     pwd
                     echo $WORKSPACE
-                    ansible-playbook -i ~/workspace/ansible-project/hosts.yml -l deploymentservers ~/workspace/ansible-project/playbooks/check.yml
+                    ansible-playbook -i ~/workspace/ansible-project/hosts.yml -l deploymentservers ~/workspace/ansible-project/playbooks/postgres.yml
                     '''
             }
             }

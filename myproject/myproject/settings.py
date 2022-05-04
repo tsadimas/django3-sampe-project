@@ -95,7 +95,7 @@ DATABASES = {
     # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
     'default': env.db(),
     # read os.environ['SQLITE_URL']
-    'extra': env.db('SQLITE_URL', default='sqlite:///.db.sqlite3')
+    'extra': env.db('SQLITE_URL', default='sqlite:///data/db.sqlite3')
 }
 
 

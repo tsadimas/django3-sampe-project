@@ -11,6 +11,15 @@ services:
       - POSTGRES_DB=test_db
     volumes:
       - dj_postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+
   django:
     build:
       context: .
@@ -22,7 +31,8 @@ services:
     volumes:
       - static_volume:/app/static
     depends_on:
-      - db
+      db:
+        condition: service_healthy
   nginx:
     image: nginx:latest
     volumes:
@@ -34,6 +44,8 @@ services:
       - "80:80"
     depends_on:
       - django
+    restart:
+      on-failure:5
 
 volumes:
   dj_postgres_data:

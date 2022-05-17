@@ -17,3 +17,10 @@ DATABASE_URL=sqlite:///./db.sqlite3
 python manage.py runserver
 ```
 test webhook
+
+# run migrations and create superuser with docker-compose
+```bash
+docker-compose exec django python manage.py makemigrations
+docker-compose exec django python manage.py migrate
+docker-compose exec django python manage.py createsuperuser
+```

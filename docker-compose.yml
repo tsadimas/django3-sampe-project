@@ -36,7 +36,9 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./assets/nginx/nginx.http.config:/etc/nginx/nginx.conf
+      - ./assets/nginx/nginx.https.config:/etc/nginx/conf.d/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
       #- ./assets/nginx/certs:/etc/nginx/certs
       - static_volume:/app/static
     ports:
@@ -46,6 +48,12 @@ services:
       - django
     restart:
       on-failure:5
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+    #command: certonly --webroot --webroot-path /var/www/certbot/ -d example.org
 
 volumes:
   dj_postgres_data:

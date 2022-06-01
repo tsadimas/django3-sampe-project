@@ -7,3 +7,4 @@ Dockerfile
 Jenkinsfile
 README.md
 *.sqlite3
+myproject/.env

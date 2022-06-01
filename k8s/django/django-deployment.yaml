@@ -14,12 +14,14 @@ spec:
     spec:
       initContainers:
         - name: django-init
-          image: tsadimas/django
-          command: ["/bin/bash"]
-          args: ["-c", "python manage.py makemigrations && python manage.py migrate"]
+          image: tsadimas/django:ht
+          envFrom:
+          - configMapRef:
+              name: django-config
+          command: ["/bin/bash", "-c", "python manage.py makemigrations && python manage.py migrate"]
       containers:
         - name: django
-          image: tsadimas/django
+          image: tsadimas/django:ht
           ports:
             - containerPort: 8000
           envFrom:

@@ -1,6 +1,13 @@
 pipeline {
     agent any
 
+     environment {
+            DOCKER_TOKEN = credentials('docker-push-secret')
+            DOCKER_USER = 'tsadimas'
+            DOCKER_SERVER = 'ghcr.io'
+            DOCKER_PREFIX = 'ghcr.io/tsadimas/django3-sampe-project'
+        }
+
 
     stages {
         stage('Build') {
@@ -37,20 +44,14 @@ pipeline {
         //     }
         // }
          stage('Docker create and push image') {
-            environment {
-                IMAGE='tsadimas/django'
-                DOCKER_USERNAME='tsadimas'
-                DOCKER_PASSWORD=credentials('docker-passwd')
-            }
+         
             steps {
                 sh '''
-                echo $BUILD_ID
-                COMMIT_ID=$(git rev-parse --short HEAD)
-                echo $COMMIT_ID
-                TAG=$COMMIT_ID-$BUILD_ID
-                docker build -t $IMAGE -t $IMAGE:$TAG .
-                docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-                docker push $IMAGE --all-tags
+                HEAD_COMMIT=$(git rev-parse --short HEAD)
+                TAG=$HEAD_COMMIT-$BUILD_ID
+                docker build --rm -t $DOCKER_PREFIX:$TAG -t $DOCKER_PREFIX:latest  .
+                echo $DOCKER_TOKEN | docker login $DOCKER_SERVER -u $DOCKER_USER --password-stdin
+                docker push $DOCKER_PREFIX --all-tags
                 '''
             }
         }

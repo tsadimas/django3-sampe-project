@@ -25,4 +25,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: django-config
+          livenessProbe:
+            httpGet:
+              path: /ht/
+              port: 8000
           imagePullPolicy: Always

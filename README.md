@@ -70,3 +70,13 @@ check README.md in k8s/certs directory to create valid certificates
 
 ### Migrations?
 ### Static files? [whitenoise](http://whitenoise.evans.io/en/stable/)
+
+
+## required apt  packages
+
+```bash
+sudo apt install python3-setuptools
+```
+
+## healthcheks
+[django-helath-cheks](https://github.com/KristianOellegaard/django-health-check)

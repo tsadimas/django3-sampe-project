@@ -64,18 +64,9 @@ kubectl apply -f k8s/django/django-clip.yaml
 ## Ingress
 
 
-### secret
+check README.md in k8s/certs directory to create valid certificates
 
-```bash
-cd assets/nginx/certs
-kubectl create secret generic tls-secret \
---from-file=tls.crt=certificate.crt \
---from-file=tls.key=private.key \
---from-file=ca.crt=ca_bundle.crt
-```
 
-```bash
-kubectl apply -f k8s/django-ingress.yaml
-```
+
 ### Migrations?
 ### Static files? [whitenoise](http://whitenoise.evans.io/en/stable/)

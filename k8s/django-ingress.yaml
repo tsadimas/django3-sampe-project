@@ -4,13 +4,13 @@ metadata:
   name: fastapi-ingress
 spec:
   rules:
-  - host: "django.tsadimas.dns-cloud.net"
+  - host: "tsadimas-django.ddns.net"
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
-          service: 
-            name: django-clip 
+          service:
+            name: django-clip
             port:
               number: 8000

@@ -4,11 +4,11 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'posts:add' %}" method="post">
-{% csrf_token %}
-<input type="text" name="title" />
-<input type="text" name="body" />
-<input type="submit" value="Add">
+
+
+<form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-secondary">Save</button>
 </form>
 
 {% endblock %}

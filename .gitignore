@@ -110,3 +110,5 @@ GitHub.sublime-settings
 myproject/static
 
 assets/nginx/certs
+
+myproject/health_check_storage_test

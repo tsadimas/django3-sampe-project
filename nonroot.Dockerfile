@@ -1,5 +1,5 @@
 # Use an existing docker image as a base
-FROM python:3.9-buster
+FROM python:3.10-buster
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1

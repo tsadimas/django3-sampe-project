@@ -108,3 +108,5 @@ GitHub.sublime-settings
 
 # static directory
 myproject/static
+
+myproject/health_check_storage_test

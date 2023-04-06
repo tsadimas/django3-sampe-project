@@ -1,4 +1,4 @@
-FROM python:3.9-bullseye
+FROM python:3.10-slim
 WORKDIR /app
 COPY myproject /app
 COPY requirements.txt /app

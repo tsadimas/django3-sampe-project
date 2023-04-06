@@ -23,7 +23,7 @@ services:
   django:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: nonroot-alpine.Dockerfile
     env_file:
      - ./myproject/myproject/.env
     ports:

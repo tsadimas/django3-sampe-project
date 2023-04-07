@@ -20,10 +20,21 @@ services:
       retries: 3
 
 
+  django-migrate:
+    command: sh -c "python manage.py makemigrations && python manage.py migrate"
+    build:
+      context: .
+      dockerfile: myDjango.Dockerfile
+    env_file:
+     - ./myproject/myproject/.env
+    depends_on:
+      db:
+        condition: service_healthy
+  
   django:
     build:
       context: .
-      dockerfile: nonroot-alpine.Dockerfile
+      dockerfile: myDjango.Dockerfile
     env_file:
      - ./myproject/myproject/.env
     ports:
@@ -31,8 +42,7 @@ services:
     volumes:
       - static_volume:/app/static
     depends_on:
-      db:
-        condition: service_healthy
+      - django-migrate
   nginx:
     image: nginx:latest
     volumes:

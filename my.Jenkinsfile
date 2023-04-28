@@ -37,7 +37,7 @@ pipeline {
 
             steps {
                 sh '''
-                    ansible-playbook -i ~/workspace/ansible-project/hosts.yml -l app01 ~/workspace/ansible-project/playbooks/django-project-install.yml
+                    ansible-playbook -i ~/workspace/ansible-project/hosts.yml -l app01 --extra-vars "user_dir=/home/azureuser" ~/workspace/ansible-project/playbooks/django-project-install.yml
                 '''
             }
         }

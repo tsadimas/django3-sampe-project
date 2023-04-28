@@ -25,7 +25,7 @@ pipeline {
             steps {
                 sh '''
                     ansible-galaxy install geerlingguy.java
-                    ansible-playbook -l db01 ~/workspace/ansible-project/playbooks/postgres.yml
+                    ansible-playbook -i ~/workspace/ansible-project/hosts.yml -l db01 ~/workspace/ansible-project/playbooks/postgres.yml
                 '''
             }
         }

@@ -34,9 +34,12 @@ pipeline {
         }
 
         stage('Deploy Django') {
-            sh '''
-                ansible-playbook -i ~/workspace/ansible-project/hosts.yml -l app01 ~/workspace/ansible-project/playbooks/django-project-install.yml
-            '''
+
+            steps {
+                sh '''
+                    ansible-playbook -i ~/workspace/ansible-project/hosts.yml -l app01 ~/workspace/ansible-project/playbooks/django-project-install.yml
+                '''
+            }
         }
 
 

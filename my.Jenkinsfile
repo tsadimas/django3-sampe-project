@@ -11,7 +11,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh '''
-                    python3 -m myvnenv
+                    python3 -m myvenv
                     source myvenv/bin/activate
                     pip install -r requirements.txt
                     cd myproject

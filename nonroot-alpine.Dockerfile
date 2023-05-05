@@ -27,8 +27,6 @@ RUN chown -R appuser:appuser /usr/data
 
 USER appuser:appuser
 
-RUN  python manage.py collectstatic --noinput
-
 EXPOSE 8000/tcp
 
 # Tell what to do when it starts as a container

@@ -18,18 +18,7 @@ pipeline {
         }
     
 
-        stage('Test') {
-                steps {
-                    sh '''
-                        python3 -m venv myvenv
-                        source myvenv/bin/activate
-                        pip install -r requirements.txt
-                        cd myproject
-                        cp myproject/.env.example myproject/.env
-                        python manage.py test
-                    '''
-                }
-            }
+
 
         stage('docker build') {
             steps {
@@ -37,9 +26,32 @@ pipeline {
                     HEAD_COMMIT=$(git rev-parse --short HEAD)
                     TAG=$HEAD_COMMIT-$BUILD_ID
                     docker build --rm -t $DOCKER_PREFIX:$TAG -t $DOCKER_PREFIX:latest -f nonroot-alpine.Dockerfile .
+                '''
+            }
+        }
+
+        stage('test') {
+            steps {
+                sh '''
+                    HEAD_COMMIT=$(git rev-parse --short HEAD)
+                    TAG=$HEAD_COMMIT-$BUILD_ID
+                    cd myproject
+                    cp myproject/.env.example myproject/.env
+                    docker run --env-file ./myproject/.env $DOCKER_PREFIX:$TAG python manage.py test
+
+                '''
+            }
+        }
+
+        stage('push docker image') {
+            steps {
+                sh '''
+                    HEAD_COMMIT=$(git rev-parse --short HEAD)
+                    TAG=$HEAD_COMMIT-$BUILD_ID
                     cat $DOCKER_TOKEN
                     cat $DOCKER_TOKEN | docker login $DOCKER_SERVER -u $DOCKER_USER --password-stdin
                     docker push $DOCKER_PREFIX --all-tags
+
                 '''
             }
         }

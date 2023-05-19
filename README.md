@@ -101,14 +101,42 @@ docker push ghcr.io/tsadimas/pms8-fastapi:latest
 ```
 
 ## create docker login secret
-* create <AUTH> from the command
+
+* create a .dockerconfigjson file, like this
+```json
+{
+    "auths": {
+        "https://ghcr.io":{
+            "username":"REGISTRY_USERNAME",
+            "password":"REGISTRY_TOKEN",
+            "email":"REGISTRY_EMAIL",
+            "auth":"BASE_64_BASIC_AUTH_CREDENTIALS"
+    	}
+    }
+}
+```
+
+
+* create <BASE_64_BASIC_AUTH_CREDENTIALS> from the command
 ```bash
-echo <USER>:<TOKEN> | base64
+echo -n <USER>:<TOKEN> | base64
 ```
 * create kubernetes secret
-```bash
-echo '{"auths":{"ghcr.io":{"auth":"<AUTH>"}}}' | kubectl create secret generic dockerconfigjson-github-com --type=kubernetes.io/dockerconfigjson --from-file=.dockerconfigjson=/dev/stdin
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dockerconfigjson-github-com
+  namespace: default
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: BASE_64_ENCODED_DOCKER_FILE
 ```
+where BASE_64_ENCODED_DOCKER_FILE is
+```bash
+cat .dockerconfigjson | base64 -w 0
+```
+
 
 Then pull an imgae from a private container registry add this to deployment (at the containers volumes)
 

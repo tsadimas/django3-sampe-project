@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-nginx
+data:
+  api.conf: |
+      server {
+            listen 80;
+            # certs
+
+            client_max_body_size 1G;
+
+            server_name _;
+
+            location / {
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_redirect off;
+            proxy_pass http://django;
+        }
+
+        location /media {
+            autoindex on;
+            alias /var/www/media/;
+            }
+        }
+
+
+        upstream django {
+            server 127.0.0.1:8000;
+        }

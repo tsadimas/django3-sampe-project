@@ -2,9 +2,9 @@
     "auths": {
         "https://ghcr.io":{
             "username":"tsadimas",
-            "password":"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",
+            "password":"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",
             "email":"tsadimas@hua.gr",
-            "auth":"dHNhZGltYXM6Z2hwX3RueFd1MWlPdnFGc09GUjZLaHhDb2hoU09Icnc5MjIyRGRpaA=="
+            "auth":"dHNhZGltYXM6Z2hwX0xSMVpvWm5RZzFsVGc5Ym96aldlNmxKWElDOGJ0cTJGU3pqOA=="
     	}
     }
 }

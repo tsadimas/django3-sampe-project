@@ -17,21 +17,34 @@ spec:
     spec:
       initContainers:
       - name: django-init
-        image: ghcr.io/tsadimas/django:89bd070-7
+        image: ghcr.io/tsadimas/django:latest
         command: ["/bin/sh", "-c", "python manage.py makemigrations && python manage.py migrate"]
         envFrom:
           - configMapRef:
               name: django-config
-        volumeMounts:
-          - name: django-storage
-            mountPath: /storage
       volumes:
         - name: django-storage
           persistentVolumeClaim:
             claimName: django-volume
+        - name: nginx-conf
+          configMap:
+            name: django-nginx
       containers:
+      - name: nginx-sidecar
+        image: nginx:stable
+        ports:
+            - containerPort: 80
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d
+            readOnly: true
+          - name: django-storage
+            mountPath: /var/www/media/
+            readOnly: true
+
       - name: django
-        image: ghcr.io/tsadimas/django:89bd070-7
+        image: ghcr.io/tsadimas/django:latest
         resources:
           requests:
             cpu: 200m
@@ -55,7 +68,7 @@ spec:
           name:  django
         volumeMounts:
           - name: django-storage
-            mountPath: /storage
+            mountPath: /app/media
       restartPolicy: Always
       imagePullSecrets:
         - name: registry-credentials

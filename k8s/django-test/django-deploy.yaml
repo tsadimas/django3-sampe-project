@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app
+  namespace: default
+  labels:
+    app: django
+spec:
+  selector:
+    matchLabels:
+      app: django
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      initContainers:
+      - name: django-init
+        image: ghcr.io/tsadimas/django:89bd070-7
+        command: ["/bin/sh", "-c", "python manage.py makemigrations && python manage.py migrate"]
+        envFrom:
+          - configMapRef:
+              name: django-config
+        volumeMounts:
+          - name: django-storage
+            mountPath: /storage
+      volumes:
+        - name: django-storage
+          persistentVolumeClaim:
+            claimName: django-volume
+      containers:
+      - name: django
+        image: ghcr.io/tsadimas/django:89bd070-7
+        resources:
+          requests:
+            cpu: 200m
+            memory: 100Mi
+          limits:
+            cpu: 500m
+            memory: 300Mi
+        env:
+        - name: ENV1
+          value: test
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: django-config
+              key: SECRET_KEY
+        envFrom:
+          - configMapRef:
+              name: django-config
+        ports:
+        - containerPort: 8000
+          name:  django
+        volumeMounts:
+          - name: django-storage
+            mountPath: /storage
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: registry-credentials

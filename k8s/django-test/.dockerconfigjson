@@ -1,0 +1,10 @@
+{
+    "auths": {
+        "https://ghcr.io":{
+            "username":"tsadimas",
+            "password":"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",
+            "email":"tsadimas@hua.gr",
+            "auth":"dHNhZGltYXM6Z2hwX3RueFd1MWlPdnFGc09GUjZLaHhDb2hoU09Icnc5MjIyRGRpaA=="
+    	}
+    }
+}

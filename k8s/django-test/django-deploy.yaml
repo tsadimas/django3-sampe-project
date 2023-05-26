@@ -26,6 +26,9 @@ spec:
         - name: django-storage
           persistentVolumeClaim:
             claimName: django-volume
+        - name: django-static
+          persistentVolumeClaim:
+            claimName: django-volume-static
         - name: nginx-conf
           configMap:
             name: django-nginx
@@ -41,6 +44,9 @@ spec:
             readOnly: true
           - name: django-storage
             mountPath: /var/www/media/
+            readOnly: true
+          - name: django-static
+            mountPath:  /var/www/static/
             readOnly: true
 
       - name: django
@@ -69,6 +75,8 @@ spec:
         volumeMounts:
           - name: django-storage
             mountPath: /app/media
+          - name: django-static
+            mountPath: /app/static
       restartPolicy: Always
       imagePullSecrets:
         - name: registry-credentials

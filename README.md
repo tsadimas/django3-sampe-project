@@ -144,6 +144,20 @@ Then pull an imgae from a private container registry add this to deployment (at 
 imagePullSecrets:
   - name: dockerconfigjson-github-com
 ```
+
+
+##  Cert Manager
+
+```bash
+kubectl create namespace cert-manager
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.crds.yaml
+
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.12.0
+```
+
 Links
 * [pre-commit: A framework for managing and maintaining multi-language pre-commit hooks.](https://pre-commit.com/)
 * [Github: Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)

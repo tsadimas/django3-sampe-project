@@ -57,6 +57,10 @@ INSTALLED_APPS = [
     'health_check.cache',
     'health_check.storage',
     'health_check.contrib.migrations',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.keycloak',
     # 'health_check.contrib.celery',              # requires celery
     # 'health_check.contrib.celery_ping',         # requires celery
     # 'health_check.contrib.psutil',              # disk and memory utilization; requires psutil
@@ -74,6 +78,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -155,3 +168,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'keycloak': {
+        'KEYCLOAK_URL': 'http://keycloak:8080',
+        'KEYCLOAK_REALM': 'myrealm'
+    }
+}
+
+LOGIN_REDIRECT_URL = '/posts'
+
+
+
+
+

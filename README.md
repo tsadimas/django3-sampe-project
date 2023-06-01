@@ -158,6 +158,53 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.12.0
 ```
 
+
+## Keycloak
+
+* create a realm
+* create a client in realm
+* root url: http://django:8000
+* Valid redirect URIs : http://django:8000/* and http://localhost:8000/*
+* Valid post logout redirect URIs : +
+* Capability Config: Client Authentication On, Authorization: On, Authentication Flow: Standard Flow, Direct Access grants, Implicit Flow, OIDC CIBA Grant
+* Logout settings: Front channel logout  On, Backchannel logout session required On
+
+### Django
+In settings
+
+```python
+INSTALLED_APPS = [
+  ...
+  'allauth',
+  'allauth.account',
+  'allauth.socialaccount',
+  'allauth.socialaccount.providers.keycloak',
+]
+
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'keycloak': {
+        'KEYCLOAK_URL': 'http://keycloak:8080',
+        'KEYCLOAK_REALM': 'myrealm'
+    }
+}
+
+LOGIN_REDIRECT_URL = '/posts'
+```
+
+* Go to django admin and create a social application with name keycloak, select provider keycloak and add Client Id and Secret Key from django client of keycloak.
+
+* Then proceed to ``http://localhost:8000/accounts/login/``
+
 Links
 * [pre-commit: A framework for managing and maintaining multi-language pre-commit hooks.](https://pre-commit.com/)
 * [Github: Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)

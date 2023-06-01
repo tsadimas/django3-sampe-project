@@ -11,4 +11,4 @@ spec:
   - name: django-srv
     protocol: TCP
     port: 8888
-    targetPort: 8000
+    targetPort: 80

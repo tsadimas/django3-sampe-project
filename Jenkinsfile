@@ -61,7 +61,7 @@ pipeline {
             sh '''
             helm repo add bitnami https://charts.bitnami.com/bitnami
             helm repo update
-            helm upgrade --install my-db bitnami/postgresql -f k8s/db-helm/values.yaml
+            helm upgrade --install mypostgres -n database --create-namespace bitnami/postgresql -f k8s/db-helm/values.yaml
             '''
             }
         }

@@ -71,7 +71,10 @@ pipeline {
                     HEAD_COMMIT=$(git rev-parse --short HEAD)
                     TAG=$HEAD_COMMIT-$BUILD_ID
                     kubectl config use-context microk8s
-
+                    kubectl apply -f k8s/django-test/django-pvc.yaml
+                    kubectl apply -f k8s/django-test/django-pvc-static.yaml
+                    kubectl apply -f k8s/django-test/django-deploy.yaml
+                    kubectl apply -f k8s/django-test/django-service.yaml
                     // kubectl set image deployment/django django=$DOCKER_PREFIX:$TAG
                     // RUNNING_TAG=$(kubectl get pods  -o=jsonpath="{.items[*].spec.containers[*].image}" -l app=django | grep $TAG)
                     // FOUND=$(echo $RUNNING_TAG | wc -l)

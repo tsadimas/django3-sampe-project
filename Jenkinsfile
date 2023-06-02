@@ -75,7 +75,8 @@ pipeline {
                     kubectl apply -f k8s/django-test/django-pvc-static.yaml
                     kubectl apply -f k8s/django-test/django-deploy.yaml
                     kubectl apply -f k8s/django-test/django-service.yaml
-                    // kubectl set image deployment/django django=$DOCKER_PREFIX:$TAG
+                    kubectl set image deployment/django-app django=$DOCKER_PREFIX:$TAG
+                    kubectl set image deployment/django-app django-init=$DOCKER_PREFIX:$TAG
                     // RUNNING_TAG=$(kubectl get pods  -o=jsonpath="{.items[*].spec.containers[*].image}" -l app=django | grep $TAG)
                     // FOUND=$(echo $RUNNING_TAG | wc -l)
                     // timeout --preserve-status 3m bash -c  -- "while [ $FOUND -eq  0 ] ; do echo \"waiting\"; sleep 1; done"

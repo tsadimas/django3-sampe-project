@@ -112,3 +112,5 @@ myproject/static
 assets/nginx/certs
 
 myproject/health_check_storage_test
+k8s/django-test/.dockerconfigjson
+k8s/django-test/container-registry-secret.yaml

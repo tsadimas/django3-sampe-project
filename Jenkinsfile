@@ -55,24 +55,37 @@ pipeline {
                 '''
             }
         }
-        stage('Deploy to k8s') {
-            steps {
-                sh '''
-                kubectl config use-context microk8s
-                cd k8s/db
-                ls *.yaml | while read x; do kubectl apply -f $x; done
-                '''
-            }
-        }
-        stage('Deploy db to k8s using Helm') {
+
+          stage('Deploy db to k8s using Helm') {
             steps {
             sh '''
-            helm repo add bitnami https://charts.bitnami.com/bitnami
-            helm repo update
-            helm upgrade --install my-db bitnami/postgresql -f k8s/db-values.yaml
+            helm status mypostgres -n database
+            if [ $? -ne 0 ]
+            then
+                helm repo add bitnami https://charts.bitnami.com/bitnami
+                helm repo update
+                helm upgrade --install mypostgres -n database --create-namespace bitnami/postgresql -f k8s/db-helm/values.yaml
+            fi
             '''
             }
         }
+         stage('deploy to k8s') {
+            steps {
+                sh '''
+                    HEAD_COMMIT=$(git rev-parse --short HEAD)
+                    TAG=$HEAD_COMMIT-$BUILD_ID
+                    kubectl config use-context microk8s
+                    kubectl apply -f k8s/django-test/django-pvc.yaml
+                    kubectl apply -f k8s/django-test/django-pvc-static.yaml
+                    kubectl apply -f k8s/django-test/django-deploy.yaml
+                    kubectl apply -f k8s/django-test/django-service.yaml
+                    kubectl set image deployment/django-app django=$DOCKER_PREFIX:$TAG
+                    kubectl set image deployment/django-app django-init=$DOCKER_PREFIX:$TAG
+                    kubectl rollout status deployment django-app --watch --timeout=2m
+                '''
+            }
+        }
+      
 
     }
 }
